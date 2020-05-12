@@ -24,7 +24,8 @@ const resolveArgs = async (clidoc, metaOptions) => {
         user = await enquireUser()
     }
     if (!profile) {
-        const inputProfileFile = process.env.AWS_SHARED_CREDENTIALS_FILE || `${process.env.HOME}/.aws/credentials`
+        const homepath = process.platform === 'win32' ? process.env.HOMEPATH : process.env.HOME
+        const inputProfileFile = process.env.AWS_SHARED_CREDENTIALS_FILE || `${homepath}/.aws/credentials`
         profileSharedFile = await enquireProfileLocation(inputProfileFile)
         profile = await enquireProfile(profileSharedFile)
     }

@@ -1,6 +1,6 @@
 {
     "name": "@roundtables/awsmfa",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Can log \"hello world\" and \"goodbye world\" to the console!",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -16,7 +16,7 @@ const resolveArgs = async (clidoc, metaOptions) => {
         cliArgs[key.replace(/[\<\>]/g, '')] = cliArgs[key]
     }
     let { user, profileSharedFile, profile, mfaARN, mfaCode } = cliArgs
-    if (!!profile && !!mfaARN && !!mfaCode) {
+    if (!!profile && !!mfaARN) {
         allSet = true
     }
 

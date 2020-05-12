@@ -14,7 +14,7 @@ const cliLogic = async (args) => {
 
   try {
     const { profile, mfaARN, AWS, mfaCode, allSet, command, args } =
-        await resolveArgs(clidoc, { version: '1.0.3' })
+        await resolveArgs(clidoc, { version: '1.0.4' })
     const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode)
 
     let processToCall = []
@@ -35,7 +35,7 @@ const cliLogic = async (args) => {
     }
 
     try {
-      await newProcess.beBornAgain(newAwsSession, profile)
+      await newProcess.beBornAgain(newAwsSession, !allSet, profile)
     } catch (e) {
       console.error('rebirth failed', e)
     }

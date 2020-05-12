@@ -32,7 +32,7 @@ export class NewProcess {
                 if (code === 0) {
                     resolve()
                 } else {
-                    reject(new Error(`Exit with error code: ${code}`))
+                    reject(new Error(`Exit with error code: ${code} for ${cmd} ${args}`))
                 }
             });
         })

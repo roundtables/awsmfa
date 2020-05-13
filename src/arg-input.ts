@@ -20,7 +20,7 @@ const resolveArgs = async (clidoc, metaOptions) => {
         allSet = true
     }
 
-    if (!profile && !user) {
+    if (!profile && !user && !mfaARN) {
         user = await enquireUser()
     }
     if (!profile) {

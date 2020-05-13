@@ -8,14 +8,14 @@ import { NewProcess } from './new-process'
 const cliLogic = async (args) => {
     const clidoc = `
   Usage:
-    awsmfa [--profile=<profile>] [--mfaARN=<mfaARN>] [--mfaCode=<mfacode>] [<command> [<args>...]]
+    awsmfa [--profile=<profile>] [--mfaARN=<mfaARN>] [--mfaCode=<mfacode>] [--account=<account>] [--role=<role>] [<command> [<args>...]]
     awsmfa -h | --help | --version
   `
 
   try {
-    const { profile, mfaARN, AWS, mfaCode, allSet, command, args } =
-        await resolveArgs(clidoc, { version: '1.0.9' })
-    const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode)
+    const { profile, mfaARN, AWS, mfaCode, allSet, account, role, command, args } =
+        await resolveArgs(clidoc, { version: '1.1.0' })
+    const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode, account, role)
 
     let processToCall = []
     if (!command) {

@@ -48,21 +48,41 @@ $ awsmfa
 
 To run without interactive prompt (useful for setting up aliases)
 (in this example, I use the aws sdk's `myclient` profile and my MFA device is linked to the account `999999999999` with a mfaCode `2983`)
+
 ```shell
 $ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser --mfaCode=2983
 ```
 
 Interactive prompt only for mfaCode (useful for setting up aliases)
+
 ```shell
 $ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser
 ```
 
 To run a specific command rather than your shell
 (in this example `aws2 s3 ls`)
+
 ```shell
 $ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser --mfaCode=2983 aws2 s3 ls
 ```
 
+To run as a specific role
+
+```shell
+$ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser --mfaCode=2983 --role=arn:aws:iam::999999999999:role/OrganizationAccountAccessRole
+```
+
+To run as a specific role by specifying account and role instead of ARN
+
+```shell
+$ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser --mfaCode=2983 --account=999999999999 --role=OrganizationAccountAccessRole
+```
+
+To assume the role default created `OrganizationAccountAccessRole` role as an SSO method we omit the role and only specify the account
+
+```shell
+$ awsmfa --profile=myclient --mfaARN=arn:aws:iam::999999999999:mfa/myuser --mfaCode=2983 --account=999999999999
+```
 
 ### Help
 

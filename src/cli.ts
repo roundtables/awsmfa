@@ -14,7 +14,7 @@ const cliLogic = async (args) => {
 
   try {
     const { profile, mfaARN, AWS, mfaCode, allSet, command, args } =
-        await resolveArgs(clidoc, { version: '1.0.7' })
+        await resolveArgs(clidoc, { version: '1.0.8' })
     const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode)
 
     let processToCall = []

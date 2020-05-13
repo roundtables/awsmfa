@@ -1,6 +1,6 @@
 {
     "name": "@roundtables/awsmfa",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Simplify your process of securing a valid session from a user that has an MFA device",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

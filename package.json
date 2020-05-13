@@ -1,6 +1,6 @@
 {
     "name": "@roundtables/awsmfa",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Simplify your process of securing a valid session from a user that has an MFA device",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
         "typescript": "^3.8.3"
     },
     "dependencies": {
-        "@roundtables/whocalled": "^1.0.1",
+        "@roundtables/whocalled": "^1.0.2",
         "aws-sdk": "^2.673.0",
         "chalk": "^4.0.0",
         "docopt": "^0.6.2",

@@ -23,9 +23,12 @@ export class NewProcess {
                 AWS_PROFILE: profile
             }
 
-            process.stdout.write('\u001b]0;')
-            process.stdout.write(`${profile} expires ${newAwsSession.Expiration}`)
-            process.stdout.write('\u0007')
+            if (updateTitle) {
+                process.stdout.write('\u001b]0;')
+                process.stdout.write(`${profile} expires ${newAwsSession.Expiration}`)
+                process.stdout.write('\u0007')
+            }
+            
             const stdio = [process.stdin, process.stdout, process.stderr]
             const reborn = spawn(cmd, args, { env: sessionedEnv, stdio, shell: true })
             reborn.once('exit', (code: number, signal: string) => {

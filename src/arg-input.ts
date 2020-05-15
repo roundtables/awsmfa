@@ -47,7 +47,6 @@ const resolveArgs = async (clidoc, metaOptions) => {
 
     return {
         ...cliArgs,
-        user,
         profile,
         profileSharedFile,
         mfaARN,

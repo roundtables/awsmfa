@@ -1,20 +1,22 @@
-import { blue } from 'chalk'
+import {green} from 'chalk'
 
-import { whoCalled } from '@roundtables/whocalled'
-import { resolveArgs } from './arg-input'
-import { getAWSSession } from './aws-session'
-import { NewProcess } from './new-process'
+import {whoCalled} from '@roundtables/whocalled'
+import {resolveArgs} from './arg-input'
+import {getAWSSession} from './aws-session'
+import {NewProcess} from './new-process'
+import {adoptSession} from './adopt-session'
+import {dockerLoginWithECR} from './docker-login-with-ecr'
 
 const cliLogic = async (args) => {
     const clidoc = `
   Usage:
-    awsmfa [--profile=<profile>] [--mfaARN=<mfaARN>] [--mfaCode=<mfacode>] [--account=<account>] [--role=<role>] [<command> [<args>...]]
+    awsmfa [--profile=<profile>] [--mfaARN=<mfaARN>] [--mfaCode=<mfacode>] [--account=<account>] [--role=<role>] [--region=<region>] [--withECRLogin] [<command> [<args>...]]
     awsmfa -h | --help | --version
   `
 
   try {
-    const { profile, mfaARN, AWS, mfaCode, allSet, account, role, command, args } =
-        await resolveArgs(clidoc, { version: '1.1.0' })
+    const { profile, mfaARN, AWS, mfaCode, allSet, account, role, command, args, region, withECRLogin } =
+        await resolveArgs(clidoc, { version: '1.2.0' })
     const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode, account, role)
 
     let processToCall = []
@@ -27,15 +29,25 @@ const cliLogic = async (args) => {
         processToCall.push(...args)
       }
     }
-    const newProcess = new NewProcess(processToCall)
 
     if (!allSet) {
       console.log('Next time you can just type')
-      console.log(blue(`awsmfa --profile=${profile} --mfaARN=${mfaARN} --mfaCode=<mfaCode>`))
+      let additionalOptions = ''
+      if (withECRLogin) additionalOptions += '--withECRLogin '
+      if (region) additionalOptions += `--region=${region} `
+      if (newAwsSession.roleArn) additionalOptions += `--role=${newAwsSession.roleArn} `
+      console.log(green(`awsmfa --profile=${profile} --mfaARN=${mfaARN} ${additionalOptions}`))
+    }
+
+    await adoptSession(AWS, region, mfaARN, mfaCode, newAwsSession, profile)
+
+    if (withECRLogin) {
+      await dockerLoginWithECR(AWS)
     }
 
     try {
-      await newProcess.beBornAgain(newAwsSession, !allSet, profile)
+      const newProcess = new NewProcess(processToCall)
+      await newProcess.spawn(newAwsSession, !allSet, profile)
     } catch (e) {
       console.error('rebirth failed', e)
     }
@@ -43,6 +55,8 @@ const cliLogic = async (args) => {
     console.error('refusing to proceed', e)
   }
 }
+
+
 
 const cli = (args) => {
   return cliLogic(args)

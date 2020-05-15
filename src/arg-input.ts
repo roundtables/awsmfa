@@ -1,7 +1,6 @@
 import { docopt } from 'docopt'
 const AWS = require('aws-sdk')
 
-import { enquireUser } from './prompts/user'
 import { enquireProfile } from './prompts/profile'
 import { enquireMfaARN } from './prompts/mfa-arn'
 import { enquireMfaToken } from './prompts/enquireMfaToken'
@@ -16,13 +15,9 @@ const resolveArgs = async (clidoc, metaOptions) => {
         cliArgs[key.replace('--', '')] = cliArgs[key]
         cliArgs[key.replace(/[\<\>]/g, '')] = cliArgs[key]
     }
-    let { user, profileSharedFile, profile, mfaARN, mfaCode, withECRLogin, region } = cliArgs
+    let { profileSharedFile, profile, mfaARN, mfaCode, withECRLogin, region } = cliArgs
     if (!!profile && !!mfaARN) {
         allSet = true
-    }
-
-    if (!profile && !user && !mfaARN) {
-        user = await enquireUser()
     }
     if (!profile) {
         const homepath = process.platform === 'win32' ? process.env.HOMEPATH : process.env.HOME
@@ -39,10 +34,10 @@ const resolveArgs = async (clidoc, metaOptions) => {
     }
 
     if (!mfaARN) {
-        mfaARN = await enquireMfaARN(AWS, profile, user, profileSharedFile)
+        mfaARN = await enquireMfaARN(AWS, profile, profileSharedFile)
     }
 
-    if (withECRLogin && !region) {
+    if (!region) {
         region = await enquireRegion()
     }
 

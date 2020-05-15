@@ -1,11 +1,9 @@
 const { Select } = require('enquirer')
 
-export const enquireMfaARN = async (AWS, profile, user, profileSharedFile) => {
+export const enquireMfaARN = async (AWS, profile, profileSharedFile) => {
     const iam = new AWS.IAM({apiVersion: '2010-05-08'})
     try {
-        const result = await iam.listMFADevices({
-            UserName: user
-        }).promise()
+        const result = await iam.listMFADevices().promise()
         const mfaDevices = result.MFADevices
 
         if (mfaDevices < 1) {

@@ -13,6 +13,7 @@ export class NewProcess {
                 process.stdout.write('\u001b]0;')
                 process.stdout.write(`${profile} expires ${newAwsSession.Expiration}`)
                 process.stdout.write('\u0007')
+                process.stdout.write('\u001b[?25h')
             }
             
             const stdio = [process.stdin, process.stdout, process.stderr]

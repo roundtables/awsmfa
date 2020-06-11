@@ -16,13 +16,13 @@ export const getAWSSession = async (AWS, mfaDeviceSerial, token, account, role) 
             }
 
             const possibleDurations = [43200, 10400, 5200, 3600]
-            for (durationAttempt of possibleDurations) {
+            for (let durationAttempt of possibleDurations) {
                 try {
                     params = {
                         ...params,
                         RoleArn: roleArn,
                         RoleSessionName: `awsmfa-${role}`,
-                        DurationSeconds: 43200
+                        DurationSeconds: durationAttempt
                     }
                     const result = await sts.assumeRole(params).promise()
         

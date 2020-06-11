@@ -15,28 +15,15 @@ export const getAWSSession = async (AWS, mfaDeviceSerial, token, account, role) 
                 }
             }
 
-            const possibleDurations = [43200, 10400, 5200, 3600]
-            for (let durationAttempt of possibleDurations) {
-                try {
-                    params = {
-                        ...params,
-                        RoleArn: roleArn,
-                        RoleSessionName: `awsmfa-${role}`,
-                        DurationSeconds: durationAttempt
-                    }
-                    const result = await sts.assumeRole(params).promise()
-        
-                    return { ...result.Credentials, roleArn }
-                }
-                catch (e) {
-                    if(e.message !== 'The requested DurationSeconds exceeds the MaxSessionDuration set for this role') {
-                        throw e
-                    }
-                    // Just try a lower duration
-                    // TODO: Query what the maximum duration for the role is or make it an input parameter
-                }
+            params = {
+                ...params,
+                RoleArn: roleArn,
+                RoleSessionName: `awsmfa-${role || account}`,
+                DurationSeconds: 43200
             }
-            
+            const result = await sts.assumeRole(params).promise()
+
+            return { ...result.Credentials, roleArn }
         } else {
             const result = await sts.getSessionToken(params).promise()
 

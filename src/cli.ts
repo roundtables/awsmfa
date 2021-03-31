@@ -16,7 +16,7 @@ const cliLogic = async (args) => {
 
   try {
     const { profile, mfaARN, AWS, mfaCode, allSet, account, role, command, args, region, withECRLogin } =
-        await resolveArgs(clidoc, { version: '1.4.2' })
+        await resolveArgs(clidoc, { version: '1.4.3' })
     const newAwsSession = await getAWSSession(AWS, mfaARN, mfaCode, account, role)
 
     let processToCall = []
@@ -46,6 +46,7 @@ const cliLogic = async (args) => {
     }
 
     try {
+      console.log('Rebirthing', processToCall)
       const newProcess = new NewProcess(processToCall)
       await newProcess.spawn(newAwsSession, !allSet, profile)
     } catch (e) {

@@ -33,7 +33,7 @@ export const dockerLoginWithECR = async (AWS) => {
 function streamWrite(
     stream: Writable,
     chunk: string | Buffer | Uint8Array,
-    encoding = 'utf8'): Promise<void> {
+    encoding = 'utf8' as BufferEncoding): Promise<void> {
     return new Promise((resolve, reject) => {
         const errListener = (err: Error) => {
             stream.removeListener('error', errListener);
